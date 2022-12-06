@@ -1,4 +1,5 @@
 import { When, Then, Given } from "@badeball/cypress-cucumber-preprocessor";
+import { when } from "cypress/types/jquery";
 const randomComputerName = Math.random().toString(36).substring(2,7);
 
 When("I visit duckduckgo.com", () => {
@@ -47,3 +48,27 @@ When('I search {string} in the listed computer', (keywordOk: string) => {
 Then('I will see the list of ASCI computers', () => {
   cy.get('.computers.zebra-striped').contains('td', 'ASCI').should("be.visible");
 });
+
+When('I fill in all the information with wrong date', () =>{
+  cy.get('#name')
+    .type(randomComputerName)
+    .get('#introduced')
+    .type('sdsa')
+    .get('#discontinued')
+    .type('sadsa')
+    .get('#company')
+    .select('Micro Instrumentation and Telemetry Systems');
+});
+
+Then('I got a warning message', () => {
+  cy.get('.help-inline').should('be.visible');
+});
+
+When('I fill in all the information with empty computer name', () =>{
+  cy.get('#introduced')
+    .type('1998-02-01')
+    .get('#discontinued')
+    .type('2021-02-10')
+    .get('#company')
+    .select('Micro Instrumentation and Telemetry Systems');
+})
